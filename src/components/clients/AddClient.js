@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-// import { compose } from "redux";
-// import { connect } from "react-redux";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 class AddClient extends Component {
@@ -12,6 +12,21 @@ class AddClient extends Component {
     email: "",
     phone: "",
     balance: ""
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const newClient = this.state;
+
+    const { firestore } = this.props;
+    // If no balance, make 0
+    if (newClient.balance === "") {
+      newClient.balance = 0;
+    }
+    firestore
+      .add({ collection: "clients" }, newClient)
+      .then(() => this.props.history.push("/"));
   };
 
   onChange = e => {
@@ -31,7 +46,7 @@ class AddClient extends Component {
         <div className="card">
           <div className="card-header">Add Client</div>
           <div className="card-body">
-            <form>
+            <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <label htmlFor="firstName">First Name</label>
                 <input
@@ -62,7 +77,6 @@ class AddClient extends Component {
                   type="email"
                   className="form-control"
                   name="email"
-                  required
                   onChange={this.onChange}
                   value={this.state.email}
                 />
@@ -70,7 +84,7 @@ class AddClient extends Component {
               <div className="form-group">
                 <label htmlFor="phone">Phone</label>
                 <input
-                  type="email"
+                  type="text"
                   className="form-control"
                   name="phone"
                   minLength="10"
@@ -90,8 +104,8 @@ class AddClient extends Component {
                 />
               </div>
               <input
-                type="text"
-                value="submit"
+                type="submit"
+                value="Submit"
                 className="btn btn-primary btn-block"
               />
             </form>
@@ -101,5 +115,9 @@ class AddClient extends Component {
     );
   }
 }
+
+AddClient.propTypes = {
+  firestore: PropTypes.object.isRequired
+};
 
 export default firestoreConnect()(AddClient);
