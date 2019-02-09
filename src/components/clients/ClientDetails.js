@@ -10,10 +10,10 @@ import classnames from "classnames";
 class ClientDetails extends Component {
   state = {
     showBalanceUpdate: false,
-    balancUpdateAmount: ""
+    balanceUpdateAmount: ""
   };
 
-  // Update Balance
+  // Update balance
   balanceSubmit = e => {
     e.preventDefault();
 
@@ -24,17 +24,17 @@ class ClientDetails extends Component {
       balance: parseFloat(balanceUpdateAmount)
     };
 
-    //Update in firestore
+    // Update in firestore
     firestore.update({ collection: "clients", doc: client.id }, clientUpdate);
   };
 
   // Delete client
   onDeleteClick = () => {
-    const { client, firestore } = this.props;
+    const { client, firestore, history } = this.props;
 
     firestore
       .delete({ collection: "clients", doc: client.id })
-      .then(() => this.props.history.push("/"));
+      .then(history.push("/"));
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -131,6 +131,8 @@ class ClientDetails extends Component {
                   {balanceForm}
                 </div>
               </div>
+
+              <hr />
               <ul className="list-group">
                 <li className="list-group-item">
                   Contact Email: {client.email}
