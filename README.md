@@ -1,3 +1,7 @@
+## View Project
+
+Open [https://reactclientproject-b3e4c.firebaseapp.com/](https://reactclientproject-b3e4c.firebaseapp.com/) to view it in the browser.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
